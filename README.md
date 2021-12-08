@@ -1,5 +1,7 @@
 # avion
 
+A small XMLHttpRequest wrapper that uses promises to wrap the calls.
+
 To install:
 
 ```js
