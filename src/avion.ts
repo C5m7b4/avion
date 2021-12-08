@@ -1,4 +1,4 @@
-import { VERBS, READY_STATES, XhrOptions, splitHeader } from './utils';
+import { VERBS, XhrOptions } from './utils';
 
 const Avion = (options: XhrOptions) => {
   switch (options.method) {
