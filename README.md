@@ -24,7 +24,7 @@ Avion({
   });
 ```
 
-PUT usage:
+POST usage:
 
 ```js
 Avion({
