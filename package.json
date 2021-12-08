@@ -1,6 +1,6 @@
 {
   "name": "avion",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Small XMLHttpRequest library",
   "main": "dist/avion.cjs.js",
   "module": "dist/avion.esm.js",
@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "rollup -c -w",
     "build": "rollup -c",
-    "build:types":"tsc -p ./tsconfig.json --outDir dist --declaration true && api-extractor run"
+    "build:types": "tsc -p ./tsconfig.json --outDir dist --declaration true && api-extractor run"
   },
   "keywords": [],
   "author": "C5m7b4",
