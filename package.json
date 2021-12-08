@@ -7,12 +7,14 @@
   "browser": "dist/avion.umd.js",
   "scripts": {
     "dev": "rollup -c -w",
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "build:types":"tsc -p ./tsconfig.json --outDir dist --declaration true && api-extractor run"
   },
   "keywords": [],
   "author": "C5m7b4",
   "license": "MIT",
   "devDependencies": {
+    "@microsoft/api-extractor": "^7.18.21",
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@rollup/plugin-typescript": "^8.3.0",
