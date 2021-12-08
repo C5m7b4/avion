@@ -53,16 +53,12 @@ Post usage to send Tokens received after logging into an API:
 
 ```js
 Avion({
-  method: 'POST',
+  method: 'GET',
   url: 'http://localhost:8080/users',
   responseType: 'json',
   headers: {
     'Content-Type': 'application/json',
-    Authorization: 'bearer asdfasdfasdfasdfasdfasdf',
-  },
-  data: {
-    username: 'user1',
-    password: 'password',
+    Authorization: 'Bearer asdfasdfasdfasdfasdfasdf',
   },
 })
   .then((response) => {
