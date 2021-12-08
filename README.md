@@ -8,6 +8,12 @@ To install:
 npm install avion
 ```
 
+Importing
+
+```js
+import Avion from 'avion';
+```
+
 GET usage:
 
 ```js
@@ -41,4 +47,35 @@ Avion({
   .catch((err) => {
     console.log(err);
   });
+```
+
+Post usage to send Tokens received after logging into an API:
+
+```js
+Avion({
+  method: 'POST',
+  url: 'http://localhost:8080/users',
+  responseType: 'json',
+  headers: {
+    'Content-Type': 'application/json',
+    Authorization: 'bearer asdfasdfasdfasdfasdfasdf',
+  },
+  data: {
+    username: 'user1',
+    password: 'password',
+  },
+})
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+```
+
+Also supports setting the responseType
+
+```js
+responseType: 'blob';
+responseType: 'arraybuffer';
 ```
