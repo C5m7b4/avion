@@ -7,6 +7,17 @@ declare const avion: {
 };
 export default avion;
 
+export declare interface AvionPromise<T = any> extends Promise<AvionResponse<T>> {
+}
+
+export declare interface AvionResponse<T = any, D = any> {
+    data: T;
+    status: number;
+    statusText: string;
+    headers: Record<string, string | number | boolean>;
+    request?: any;
+}
+
 export declare interface AvionResult {
     ok: boolean;
     status: number;
