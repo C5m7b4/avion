@@ -1,4 +1,11 @@
-import Avion from './avion';
-export { XhrOptions, VERBS, READY_STATES } from './utils';
+import avion from './avion';
+export {
+  XhrOptions,
+  VERBS,
+  READY_STATES,
+  RequestOptions,
+  HeaderInterface,
+  RequestResult,
+} from './interfaces';
 
-export default Avion;
+export default avion;

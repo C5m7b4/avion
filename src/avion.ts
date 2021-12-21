@@ -1,60 +1,45 @@
-import { VERBS, XhrOptions } from './utils';
+import {
+  VERBS,
+  XhrOptions,
+  ResponseType,
+  RequestResult,
+  DEFAULT_REQUEST_OPTIONS,
+} from './interfaces';
 
-const Avion = (options: XhrOptions) => {
-  switch (options.method) {
-    case VERBS.GET:
-      return sendHttpRequest(options.method, options.url, null, options);
-      break;
-    case VERBS.POST:
-      return sendHttpRequest(
-        options.method,
-        options.url,
-        options.data,
-        options
-      );
-      break;
-    case VERBS.DELETE:
-      return sendHttpRequest(
-        options.method,
-        options.url,
-        options.data,
-        options
-      );
-      break;
-    case VERBS.PUT:
-      return sendHttpRequest(
-        options.method,
-        options.url,
-        options.data,
-        options
-      );
-      break;
-    case VERBS.PATCH:
-      return sendHttpRequest(
-        options.method,
-        options.url,
-        options.data,
-        options
-      );
-      break;
-    default:
-      return sendHttpRequest(options.method, options.url, null, options);
-      break;
-  }
-};
+function parseXHRResult(xhr: XMLHttpRequest): RequestResult {
+  return {
+    ok: xhr.status >= 200 && xhr.status < 300,
+    status: xhr.status,
+    statusText: xhr.statusText,
+    headers: xhr.getAllResponseHeaders(),
+    data: xhr.response || xhr.responseText,
+    json: <T>() => JSON.parse(xhr.responseText),
+  };
+}
 
-const sendHttpRequest = (
-  method: VERBS,
-  url: string,
-  data?: any,
-  options?: XhrOptions
-) => {
-  const promise = new Promise((resolve, reject) => {
+function errorResponse(
+  xhr: XMLHttpRequest,
+  message: string | null = null
+): RequestResult {
+  return {
+    ok: false,
+    status: xhr.status,
+    statusText: xhr.statusText,
+    headers: xhr.getAllResponseHeaders(),
+    data: message || xhr.statusText,
+    json: <T>() => JSON.parse(message || xhr.statusText) as T,
+  };
+}
+
+const avion = (options: XhrOptions) => {
+  const ignoreCache =
+    options.ignoreCache || DEFAULT_REQUEST_OPTIONS.ignoreCache;
+  const headers = options.headers || DEFAULT_REQUEST_OPTIONS.headers;
+  const timeout = options.timeout || DEFAULT_REQUEST_OPTIONS.timeout;
+
+  return new Promise<RequestResult>((resolve, reject) => {
     const xhr = new XMLHttpRequest();
-    xhr.open(method, url);
-    xhr.onerror = (err) => {
-      reject(err);
-    };
+    xhr.open(options.method, options.url);
 
     if (options) {
       if (options.responseType) {
@@ -62,28 +47,37 @@ const sendHttpRequest = (
       } else {
         xhr.responseType = 'json';
       }
-      if (options.headers) {
-        for (var propertyname in options.headers) {
-          xhr.setRequestHeader(propertyname, options.headers[propertyname]);
-        }
+      if (headers) {
+        Object.keys(options).forEach((key) =>
+          xhr.setRequestHeader(key, headers[key])
+        );
       } else {
-        if (data) {
+        if (options.data) {
           xhr.setRequestHeader('Content-Type', 'application/json');
         }
       }
     }
 
-    xhr.onload = () => {
-      if (xhr.status > 400) {
-        reject(xhr.response);
-      } else {
-        resolve(xhr.response);
-      }
-    };
-    xhr.send(JSON.stringify(data));
-  });
+    if (ignoreCache) {
+      xhr.setRequestHeader('Cache-Control', 'no-cache');
+    }
 
-  return promise;
+    xhr.timeout = timeout;
+
+    xhr.onload = (evt) => {
+      resolve(parseXHRResult(xhr));
+    };
+
+    xhr.onerror = (evt) => {
+      resolve(errorResponse(xhr, 'Request failed'));
+    };
+
+    xhr.ontimeout = (evt) => {
+      resolve(errorResponse(xhr, 'Request timed out'));
+    };
+
+    xhr.send(JSON.stringify(options.data));
+  });
 };
 
-export default Avion;
+export default avion;

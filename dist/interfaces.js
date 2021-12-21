@@ -14,3 +14,10 @@ export var VERBS;
     VERBS["PATCH"] = "PATCH";
     VERBS["DELETE"] = "DELETE";
 })(VERBS || (VERBS = {}));
+export const DEFAULT_REQUEST_OPTIONS = {
+    ignoreCache: false,
+    headers: {
+        Accept: 'applicaiton/json, text/javascript, text/plain',
+    },
+    timeout: 5000,
+};
