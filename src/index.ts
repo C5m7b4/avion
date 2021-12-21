@@ -5,7 +5,9 @@ export {
   READY_STATES,
   RequestOptions,
   HeaderInterface,
-  RequestResult,
+  AvionResult,
 } from './interfaces';
+
+export { get } from './Get';
 
 export default avion;

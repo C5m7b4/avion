@@ -2,11 +2,11 @@ import {
   VERBS,
   XhrOptions,
   ResponseType,
-  RequestResult,
+  AvionResult,
   DEFAULT_REQUEST_OPTIONS,
 } from './interfaces';
 
-function parseXHRResult(xhr: XMLHttpRequest): RequestResult {
+export function parseXHRResult(xhr: XMLHttpRequest): AvionResult {
   return {
     ok: xhr.status >= 200 && xhr.status < 300,
     status: xhr.status,
@@ -17,10 +17,10 @@ function parseXHRResult(xhr: XMLHttpRequest): RequestResult {
   };
 }
 
-function errorResponse(
+export function errorResponse(
   xhr: XMLHttpRequest,
   message: string | null = null
-): RequestResult {
+): AvionResult {
   return {
     ok: false,
     status: xhr.status,
@@ -37,7 +37,7 @@ const avion = (options: XhrOptions) => {
   const headers = options.headers || DEFAULT_REQUEST_OPTIONS.headers;
   const timeout = options.timeout || DEFAULT_REQUEST_OPTIONS.timeout;
 
-  return new Promise<RequestResult>((resolve, reject) => {
+  return new Promise<AvionResult>((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open(options.method, options.url);
 
@@ -79,5 +79,7 @@ const avion = (options: XhrOptions) => {
     xhr.send(JSON.stringify(options.data));
   });
 };
+
+avion.get = function (url: string) {};
 
 export default avion;

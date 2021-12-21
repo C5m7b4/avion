@@ -1,5 +1,5 @@
 import { DEFAULT_REQUEST_OPTIONS, } from './interfaces';
-function parseXHRResult(xhr) {
+export function parseXHRResult(xhr) {
     return {
         ok: xhr.status >= 200 && xhr.status < 300,
         status: xhr.status,
@@ -9,7 +9,7 @@ function parseXHRResult(xhr) {
         json: () => JSON.parse(xhr.responseText),
     };
 }
-function errorResponse(xhr, message = null) {
+export function errorResponse(xhr, message = null) {
     return {
         ok: false,
         status: xhr.status,
@@ -58,4 +58,5 @@ const avion = (options) => {
         xhr.send(JSON.stringify(options.data));
     });
 };
+avion.get = function (url) { };
 export default avion;

@@ -22,6 +22,7 @@ export interface XhrOptions {
     responseType: ResponseType;
     ignoreCache?: boolean;
     timeout?: number;
+    get?: () => AvionResult;
 }
 export interface HeaderInterface {
     key: string;
@@ -35,7 +36,7 @@ export interface RequestOptions {
     timeout: number;
 }
 export declare const DEFAULT_REQUEST_OPTIONS: RequestOptions;
-export interface RequestResult {
+export interface AvionResult {
     ok: boolean;
     status: number;
     statusText: string;

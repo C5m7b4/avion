@@ -81,5 +81,23 @@ const avion = (options) => {
         xhr.send(JSON.stringify(options.data));
     });
 };
+avion.get = function (url) { };
 
-export { READY_STATES, VERBS, avion as default };
+const get = (avion.get = function (url) {
+    return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', url);
+        xhr.onload = (evt) => {
+            resolve(parseXHRResult(xhr));
+        };
+        xhr.onerror = (evt) => {
+            resolve(errorResponse(xhr, 'Request failed'));
+        };
+        xhr.ontimeout = (evt) => {
+            resolve(errorResponse(xhr, 'Request timed out'));
+        };
+        xhr.send();
+    });
+});
+
+export { READY_STATES, VERBS, avion as default, get };
