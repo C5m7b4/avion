@@ -63,3 +63,13 @@ export interface AvionResult {
   json: <T>() => T;
   headers: string;
 }
+
+export interface AvionResponse<T = any, D = any> {
+  data: T;
+  status: number;
+  statusText: string;
+  headers: Record<string, string | number | boolean>;
+  request?: any;
+}
+
+export interface AvionPromise<T = any> extends Promise<AvionResponse<T>> {}
