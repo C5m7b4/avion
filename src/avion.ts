@@ -81,5 +81,6 @@ const avion = (options: XhrOptions) => {
 };
 
 avion.get = function (url: string) {};
+avion.post = function (url: string, data: any) {};
 
 export default avion;

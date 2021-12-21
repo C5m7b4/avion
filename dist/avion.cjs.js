@@ -86,6 +86,7 @@ const avion = (options) => {
     });
 };
 avion.get = function (url) { };
+avion.post = function (url, data) { };
 
 const get = (avion.get = function (url) {
     return new Promise((resolve, reject) => {
@@ -104,5 +105,23 @@ const get = (avion.get = function (url) {
     });
 });
 
+const post = (avion.post = function (url, data) {
+    return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', url);
+        xhr.onload = (evt) => {
+            resolve(parseXHRResult(xhr));
+        };
+        xhr.onerror = (evt) => {
+            resolve(errorResponse(xhr, 'Request failed'));
+        };
+        xhr.ontimeout = (evt) => {
+            resolve(errorResponse(xhr, 'Request timed out'));
+        };
+        xhr.send(JSON.stringify(data));
+    });
+});
+
 exports["default"] = avion;
 exports.get = get;
+exports.post = post;

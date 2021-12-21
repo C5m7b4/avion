@@ -9,5 +9,6 @@ export {
 } from './interfaces';
 
 export { get } from './Get';
+export { post } from './Post';
 
 export default avion;

@@ -31,6 +31,7 @@ export interface XhrOptions {
   ignoreCache?: boolean;
   timeout?: number;
   get?: () => AvionResult;
+  post?: () => AvionResult;
 }
 
 export interface HeaderInterface {
