@@ -33,6 +33,7 @@ export interface XhrOptions {
   get?: () => AvionResult;
   post?: () => AvionResult;
   put?: () => AvionResult;
+  del?: () => AvionResult;
 }
 
 export interface HeaderInterface {
