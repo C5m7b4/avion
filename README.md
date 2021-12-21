@@ -11,13 +11,13 @@ npm install avion
 Importing
 
 ```js
-import Avion from 'avion';
+import avion from 'avion';
 ```
 
 GET usage:
 
 ```js
-Avion({
+avion({
   method: 'GET',
   url: 'https://reqres.in/api/users',
 })
@@ -33,7 +33,7 @@ Avion({
 POST usage:
 
 ```js
-Avion({
+avion({
   method: 'POST',
   url: 'https://reqres.in/api/register',
   data: {
@@ -52,7 +52,7 @@ Avion({
 Post usage to send Tokens received after logging into an API:
 
 ```js
-Avion({
+avion({
   method: 'GET',
   url: 'http://localhost:8080/users',
   responseType: 'json',
