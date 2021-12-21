@@ -32,6 +32,7 @@ export interface XhrOptions {
   timeout?: number;
   get?: () => AvionResult;
   post?: () => AvionResult;
+  put?: () => AvionResult;
 }
 
 export interface HeaderInterface {
