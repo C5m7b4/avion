@@ -7,6 +7,8 @@ export {
   HeaderInterface,
   AvionResult,
   ResponseType,
+  AvionResponse,
+  AvionPromise,
 } from './interfaces';
 
 export { get } from './Get';
