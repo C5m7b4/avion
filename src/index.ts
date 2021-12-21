@@ -6,6 +6,7 @@ export {
   RequestOptions,
   HeaderInterface,
   AvionResult,
+  ResponseType,
 } from './interfaces';
 
 export { get } from './Get';

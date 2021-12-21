@@ -1,8 +1,8 @@
 import avion, { parseXHRResult, errorResponse } from './avion';
-export const get = (avion.get = function (url) {
+export const put = (avion.put = function (url, data) {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
-        xhr.open('GET', url);
+        xhr.open('PUT', url);
         xhr.onload = (evt) => {
             resolve(parseXHRResult(xhr));
         };
@@ -12,6 +12,6 @@ export const get = (avion.get = function (url) {
         xhr.ontimeout = (evt) => {
             resolve(errorResponse(xhr, 'Request timed out'));
         };
-        xhr.send();
+        xhr.send(JSON.stringify(data));
     });
 });

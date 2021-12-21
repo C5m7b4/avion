@@ -59,4 +59,7 @@ const avion = (options) => {
     });
 };
 avion.get = function (url) { };
+avion.post = function (url, data) { };
+avion.put = function (url, data) { };
+avion.del = function (url, id) { };
 export default avion;

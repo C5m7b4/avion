@@ -1,6 +1,9 @@
 declare const avion: {
     (options: XhrOptions): Promise<AvionResult>;
     get(url: string): void;
+    post(url: string, data: any): void;
+    put(url: string, data: any): void;
+    del(url: string, id: string): void;
 };
 export default avion;
 
@@ -13,10 +16,18 @@ export declare interface AvionResult {
     headers: string;
 }
 
+export declare const del: (url: string, id: string) => Promise<AvionResult>;
+
+export declare const get: (url: string) => Promise<AvionResult>;
+
 export declare interface HeaderInterface {
     key: string;
     value: string;
 }
+
+export declare const post: (url: string, data: any) => Promise<AvionResult>;
+
+export declare const put: (url: string, data: any) => Promise<AvionResult>;
 
 export declare enum READY_STATES {
     UNSEND = 0,
@@ -35,6 +46,7 @@ export declare interface RequestOptions {
 }
 
 declare type ResponseType_2 = 'arraybuffer' | 'blob' | 'document' | 'json' | 'text';
+export { ResponseType_2 as ResponseType }
 
 export declare enum VERBS {
     GET = "GET",
@@ -54,6 +66,9 @@ export declare interface XhrOptions {
     ignoreCache?: boolean;
     timeout?: number;
     get?: () => AvionResult;
+    post?: () => AvionResult;
+    put?: () => AvionResult;
+    del?: () => AvionResult;
 }
 
 export { }

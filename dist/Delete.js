@@ -1,8 +1,8 @@
 import avion, { parseXHRResult, errorResponse } from './avion';
-export const get = (avion.get = function (url) {
+export const del = (avion.del = function (url, id) {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
-        xhr.open('GET', url);
+        xhr.open('DELETE', url + '/' + id);
         xhr.onload = (evt) => {
             resolve(parseXHRResult(xhr));
         };

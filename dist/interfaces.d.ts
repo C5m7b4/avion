@@ -23,6 +23,9 @@ export interface XhrOptions {
     ignoreCache?: boolean;
     timeout?: number;
     get?: () => AvionResult;
+    post?: () => AvionResult;
+    put?: () => AvionResult;
+    del?: () => AvionResult;
 }
 export interface HeaderInterface {
     key: string;
