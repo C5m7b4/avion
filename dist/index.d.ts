@@ -1,9 +1,9 @@
 declare const avion: {
     (options: XhrOptions): Promise<AvionResult>;
-    get(url: string): void;
-    post(url: string, data: any): void;
-    put(url: string, data: any): void;
-    del(url: string, id: string): void;
+    get: (url: string) => Promise<AvionResult>;
+    post: (url: string, data: any) => Promise<AvionResult>;
+    put: (url: string, data: any) => Promise<AvionResult>;
+    del: (url: string, id: string) => Promise<AvionResult>;
 };
 export default avion;
 
@@ -27,18 +27,10 @@ export declare interface AvionResult {
     headers: string;
 }
 
-export declare const del: (url: string, id: string) => Promise<AvionResult>;
-
-export declare const get: (url: string) => Promise<AvionResult>;
-
 export declare interface HeaderInterface {
     key: string;
     value: string;
 }
-
-export declare const post: (url: string, data: any) => Promise<AvionResult>;
-
-export declare const put: (url: string, data: any) => Promise<AvionResult>;
 
 export declare enum READY_STATES {
     UNSEND = 0,

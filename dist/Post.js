@@ -1,5 +1,5 @@
-import avion, { parseXHRResult, errorResponse } from './avion';
-export const post = (avion.post = function (url, data) {
+import { parseXHRResult, errorResponse } from './avion';
+export const post = function (url, data) {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', url);
@@ -14,4 +14,4 @@ export const post = (avion.post = function (url, data) {
         };
         xhr.send(JSON.stringify(data));
     });
-});
+};

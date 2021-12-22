@@ -1,8 +1,7 @@
-import { XhrOptions } from '.';
 import avion, { parseXHRResult, errorResponse } from './avion';
 import { AvionResult } from './interfaces';
 
-export const del = (avion.del = function (url: string, id: string) {
+export const del = function (url: string, id: string) {
   return new Promise<AvionResult>((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open('DELETE', url + '/' + id);
@@ -21,4 +20,4 @@ export const del = (avion.del = function (url: string, id: string) {
 
     xhr.send();
   });
-});
+};

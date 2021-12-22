@@ -1,7 +1,7 @@
 import avion, { parseXHRResult, errorResponse } from './avion';
 import { AvionResult } from './interfaces';
 
-export const put = (avion.put = function (url: string, data: any) {
+export const put = function (url: string, data: any) {
   return new Promise<AvionResult>((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open('PUT', url);
@@ -20,4 +20,4 @@ export const put = (avion.put = function (url: string, data: any) {
 
     xhr.send(JSON.stringify(data));
   });
-});
+};

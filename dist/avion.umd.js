@@ -28,6 +28,74 @@
         timeout: 5000,
     };
 
+    const get = function (url) {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', url);
+            xhr.onload = (evt) => {
+                resolve(parseXHRResult(xhr));
+            };
+            xhr.onerror = (evt) => {
+                resolve(errorResponse(xhr, 'Request failed'));
+            };
+            xhr.ontimeout = (evt) => {
+                resolve(errorResponse(xhr, 'Request timed out'));
+            };
+            xhr.send();
+        });
+    };
+
+    const del = function (url, id) {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('DELETE', url + '/' + id);
+            xhr.onload = (evt) => {
+                resolve(parseXHRResult(xhr));
+            };
+            xhr.onerror = (evt) => {
+                resolve(errorResponse(xhr, 'Request failed'));
+            };
+            xhr.ontimeout = (evt) => {
+                resolve(errorResponse(xhr, 'Request timed out'));
+            };
+            xhr.send();
+        });
+    };
+
+    const put = function (url, data) {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('PUT', url);
+            xhr.onload = (evt) => {
+                resolve(parseXHRResult(xhr));
+            };
+            xhr.onerror = (evt) => {
+                resolve(errorResponse(xhr, 'Request failed'));
+            };
+            xhr.ontimeout = (evt) => {
+                resolve(errorResponse(xhr, 'Request timed out'));
+            };
+            xhr.send(JSON.stringify(data));
+        });
+    };
+
+    const post = function (url, data) {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', url);
+            xhr.onload = (evt) => {
+                resolve(parseXHRResult(xhr));
+            };
+            xhr.onerror = (evt) => {
+                resolve(errorResponse(xhr, 'Request failed'));
+            };
+            xhr.ontimeout = (evt) => {
+                resolve(errorResponse(xhr, 'Request timed out'));
+            };
+            xhr.send(JSON.stringify(data));
+        });
+    };
+
     function parseXHRResult(xhr) {
         return {
             ok: xhr.status >= 200 && xhr.status < 300,
@@ -87,84 +155,12 @@
             xhr.send(JSON.stringify(options.data));
         });
     };
-    avion.get = function (url) { };
-    avion.post = function (url, data) { };
-    avion.put = function (url, data) { };
-    avion.del = function (url, id) { };
-
-    const get = (avion.get = function (url) {
-        return new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', url);
-            xhr.onload = (evt) => {
-                resolve(parseXHRResult(xhr));
-            };
-            xhr.onerror = (evt) => {
-                resolve(errorResponse(xhr, 'Request failed'));
-            };
-            xhr.ontimeout = (evt) => {
-                resolve(errorResponse(xhr, 'Request timed out'));
-            };
-            xhr.send();
-        });
-    });
-
-    const post = (avion.post = function (url, data) {
-        return new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', url);
-            xhr.onload = (evt) => {
-                resolve(parseXHRResult(xhr));
-            };
-            xhr.onerror = (evt) => {
-                resolve(errorResponse(xhr, 'Request failed'));
-            };
-            xhr.ontimeout = (evt) => {
-                resolve(errorResponse(xhr, 'Request timed out'));
-            };
-            xhr.send(JSON.stringify(data));
-        });
-    });
-
-    const put = (avion.put = function (url, data) {
-        return new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            xhr.open('PUT', url);
-            xhr.onload = (evt) => {
-                resolve(parseXHRResult(xhr));
-            };
-            xhr.onerror = (evt) => {
-                resolve(errorResponse(xhr, 'Request failed'));
-            };
-            xhr.ontimeout = (evt) => {
-                resolve(errorResponse(xhr, 'Request timed out'));
-            };
-            xhr.send(JSON.stringify(data));
-        });
-    });
-
-    const del = (avion.del = function (url, id) {
-        return new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            xhr.open('DELETE', url + '/' + id);
-            xhr.onload = (evt) => {
-                resolve(parseXHRResult(xhr));
-            };
-            xhr.onerror = (evt) => {
-                resolve(errorResponse(xhr, 'Request failed'));
-            };
-            xhr.ontimeout = (evt) => {
-                resolve(errorResponse(xhr, 'Request timed out'));
-            };
-            xhr.send();
-        });
-    });
+    avion.get = get;
+    avion.post = post;
+    avion.put = put;
+    avion.del = del;
 
     exports["default"] = avion;
-    exports.del = del;
-    exports.get = get;
-    exports.post = post;
-    exports.put = put;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

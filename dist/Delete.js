@@ -1,5 +1,5 @@
-import avion, { parseXHRResult, errorResponse } from './avion';
-export const del = (avion.del = function (url, id) {
+import { parseXHRResult, errorResponse } from './avion';
+export const del = function (url, id) {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
         xhr.open('DELETE', url + '/' + id);
@@ -14,4 +14,4 @@ export const del = (avion.del = function (url, id) {
         };
         xhr.send();
     });
-});
+};

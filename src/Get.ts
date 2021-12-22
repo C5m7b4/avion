@@ -1,8 +1,7 @@
-import { XhrOptions } from '.';
 import avion, { parseXHRResult, errorResponse } from './avion';
-import { AvionResult } from './interfaces';
+import { AvionResult, AvionResponse } from './interfaces';
 
-export const get = (avion.get = function (url: string) {
+export const get = function (url: string) {
   return new Promise<AvionResult>((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', url);
@@ -21,4 +20,4 @@ export const get = (avion.get = function (url: string) {
 
     xhr.send();
   });
-});
+};

@@ -5,6 +5,10 @@ import {
   AvionResult,
   DEFAULT_REQUEST_OPTIONS,
 } from './interfaces';
+import { get } from './Get';
+import { del } from './Delete';
+import { put } from './Put';
+import { post } from './Post';
 
 export function parseXHRResult(xhr: XMLHttpRequest): AvionResult {
   return {
@@ -80,9 +84,9 @@ const avion = (options: XhrOptions) => {
   });
 };
 
-avion.get = function (url: string) {};
-avion.post = function (url: string, data: any) {};
-avion.put = function (url: string, data: any) {};
-avion.del = function (url: string, id: string) {};
+avion.get = get;
+avion.post = post;
+avion.put = put;
+avion.del = del;
 
 export default avion;

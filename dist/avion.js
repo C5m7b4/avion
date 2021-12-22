@@ -1,4 +1,8 @@
 import { DEFAULT_REQUEST_OPTIONS, } from './interfaces';
+import { get } from './Get';
+import { del } from './Delete';
+import { put } from './Put';
+import { post } from './Post';
 export function parseXHRResult(xhr) {
     return {
         ok: xhr.status >= 200 && xhr.status < 300,
@@ -58,8 +62,8 @@ const avion = (options) => {
         xhr.send(JSON.stringify(options.data));
     });
 };
-avion.get = function (url) { };
-avion.post = function (url, data) { };
-avion.put = function (url, data) { };
-avion.del = function (url, id) { };
+avion.get = get;
+avion.post = post;
+avion.put = put;
+avion.del = del;
 export default avion;
