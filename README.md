@@ -140,3 +140,26 @@ btn6.addEventListener('click', () => {
     });
 });
 ```
+
+For Typescript usage here is an example of a simple GET request:
+
+```js
+import avion, { AvionResult } from 'avion';
+
+const getCourses = async (): Promise<AvionResult> => {
+  return await avion.get('http://localhost:3001/courses');
+};
+
+const btn7 = document.getElementById('btn7');
+const resultDiv = document.getElementById('results');
+btn7.addEventListener('click', async () => {
+  console.log('we are clicked');
+  getCourses().then((response) => {
+    if (response.ok) {
+      resultDiv.innerHTML = JSON.stringify(response.data);
+    } else {
+      resultDiv.innerHTML = response.statusText;
+    }
+  });
+});
+```
