@@ -153,7 +153,6 @@ const getCourses = async (): Promise<AvionResult> => {
 const btn7 = document.getElementById('btn7');
 const resultDiv = document.getElementById('results');
 btn7.addEventListener('click', async () => {
-  console.log('we are clicked');
   getCourses().then((response) => {
     if (response.ok) {
       resultDiv.innerHTML = JSON.stringify(response.data);
