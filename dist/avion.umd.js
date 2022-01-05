@@ -104,6 +104,7 @@
             headers: xhr.getAllResponseHeaders(),
             data: xhr.response || xhr.responseText,
             json: () => JSON.parse(xhr.responseText),
+            responseUrl: xhr.responseURL,
         };
     }
     function errorResponse(xhr, message = null) {
@@ -114,6 +115,7 @@
             headers: xhr.getAllResponseHeaders(),
             data: message || xhr.statusText,
             json: () => JSON.parse(message || xhr.statusText),
+            responseUrl: xhr.responseURL,
         };
     }
     const avion = (options) => {

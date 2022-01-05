@@ -62,6 +62,7 @@ export interface AvionResult {
   data: string;
   json: <T>() => T;
   headers: string;
+  responseUrl: string;
 }
 
 export interface AvionResponse<T = any, D = any> {

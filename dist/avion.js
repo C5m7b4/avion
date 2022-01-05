@@ -11,6 +11,7 @@ export function parseXHRResult(xhr) {
         headers: xhr.getAllResponseHeaders(),
         data: xhr.response || xhr.responseText,
         json: () => JSON.parse(xhr.responseText),
+        responseUrl: xhr.responseURL,
     };
 }
 export function errorResponse(xhr, message = null) {
@@ -21,6 +22,7 @@ export function errorResponse(xhr, message = null) {
         headers: xhr.getAllResponseHeaders(),
         data: message || xhr.statusText,
         json: () => JSON.parse(message || xhr.statusText),
+        responseUrl: xhr.responseURL,
     };
 }
 const avion = (options) => {

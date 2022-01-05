@@ -18,6 +18,7 @@ export function parseXHRResult(xhr: XMLHttpRequest): AvionResult {
     headers: xhr.getAllResponseHeaders(),
     data: xhr.response || xhr.responseText,
     json: <T>() => JSON.parse(xhr.responseText),
+    responseUrl: xhr.responseURL,
   };
 }
 
@@ -32,6 +33,7 @@ export function errorResponse(
     headers: xhr.getAllResponseHeaders(),
     data: message || xhr.statusText,
     json: <T>() => JSON.parse(message || xhr.statusText) as T,
+    responseUrl: xhr.responseURL,
   };
 }
 

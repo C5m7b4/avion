@@ -25,6 +25,7 @@ export declare interface AvionResult {
     data: string;
     json: <T>() => T;
     headers: string;
+    responseUrl: string;
 }
 
 export declare interface HeaderInterface {
