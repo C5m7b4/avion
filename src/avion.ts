@@ -17,7 +17,7 @@ export function parseXHRResult(xhr: XMLHttpRequest): AvionResult {
     statusText: xhr.statusText,
     headers: xhr.getAllResponseHeaders(),
     data: xhr.response || xhr.responseText,
-    json: <T>() => JSON.parse(xhr.responseText),
+    json: () => JSON.parse(xhr.responseText) || JSON.parse(xhr.response.data),
     responseUrl: xhr.responseURL,
   };
 }
