@@ -1,6 +1,6 @@
 {
   "name": "avion",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Small XMLHttpRequest library",
   "main": "dist/avion.cjs.js",
   "module": "dist/avion.esm.js",
