@@ -1,4 +1,5 @@
 import avion from './avion';
+export { default as useAvion } from './useAvion';
 export {
   XhrOptions,
   VERBS,
