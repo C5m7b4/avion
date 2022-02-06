@@ -1,8 +1,10 @@
 import avion from './avion';
 export { default as useAvion } from './useAvion';
+export { stringify } from './utils';
+
 export {
   XhrOptions,
-  VERBS,
+  VERB,
   READY_STATES,
   RequestOptions,
   HeaderInterface,
@@ -11,10 +13,5 @@ export {
   AvionResponse,
   AvionPromise,
 } from './interfaces';
-
-// export { get } from './Get';
-// export { post } from './Post';
-// export { put } from './Put';
-// export { del } from './Delete';
 
 export default avion;
