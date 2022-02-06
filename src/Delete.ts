@@ -1,20 +1,20 @@
-import avion, { parseXHRResult, errorResponse } from './avion';
+import { parseXHRResult, errorResponse } from './avion';
 import { AvionResult } from './interfaces';
 
 export const del = function (url: string, id: string) {
-  return new Promise<AvionResult>((resolve, reject) => {
+  return new Promise<AvionResult>((resolve) => {
     const xhr = new XMLHttpRequest();
     xhr.open('DELETE', url + '/' + id);
 
-    xhr.onload = (evt) => {
+    xhr.onload = () => {
       resolve(parseXHRResult(xhr));
     };
 
-    xhr.onerror = (evt) => {
+    xhr.onerror = () => {
       resolve(errorResponse(xhr, 'Request failed'));
     };
 
-    xhr.ontimeout = (evt) => {
+    xhr.ontimeout = () => {
       resolve(errorResponse(xhr, 'Request timed out'));
     };
 
