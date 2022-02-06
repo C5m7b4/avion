@@ -1,6 +1,6 @@
 {
   "name": "avion",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Small XMLHttpRequest library",
   "main": "dist/avion.cjs.js",
   "module": "dist/avion.esm.js",
@@ -24,6 +24,7 @@
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@rollup/plugin-typescript": "^8.3.0",
+    "@types/react": "^17.0.39",
     "eslint": "^8.4.1",
     "rollup": "^2.60.2",
     "ts-node": "^10.4.0",
@@ -33,5 +34,7 @@
   "files": [
     "dist"
   ],
-  "dependencies": {}
+  "peerDependencies": {
+    "react": "^17.0.2"
+  }
 }
