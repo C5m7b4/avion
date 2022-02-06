@@ -1,15 +1,15 @@
 import { parseXHRResult, errorResponse } from './avion';
 export const put = function (url, data) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         const xhr = new XMLHttpRequest();
         xhr.open('PUT', url);
-        xhr.onload = (evt) => {
+        xhr.onload = () => {
             resolve(parseXHRResult(xhr));
         };
-        xhr.onerror = (evt) => {
+        xhr.onerror = () => {
             resolve(errorResponse(xhr, 'Request failed'));
         };
-        xhr.ontimeout = (evt) => {
+        xhr.ontimeout = () => {
             resolve(errorResponse(xhr, 'Request timed out'));
         };
         xhr.send(JSON.stringify(data));
