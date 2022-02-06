@@ -218,6 +218,7 @@ Arguments to the hook look like this:
 ```
 
 Say you want to post a form-type response and use the hook. This is what that would look like:
+(note the Content-Type)
 
 ```js
 import {useAvion, stringify} from 'avion';
@@ -295,6 +296,7 @@ public ActionResult PostSomeData([FromForm] Test test)
 ```
 
 An alternative to posting to the Form would be post to the Body and that would look like this:
+(note the Content-Type and we are not using stringify on the data parameter)
 
 ```js
 
