@@ -1,48 +1,64 @@
 import { useState, useEffect } from 'react';
-import avion from './avion';
-import { VERBS } from './interfaces';
+import { fetch, fetchWithParams } from './helpers';
+import { XhrOptions, AvionResult } from '.';
 
-const useAvion = <T>(
-  url: string,
-  method: VERBS,
-  headers = { 'Content-Type': 'application/json' },
-  ...args: any
-) => {
-  const [data, setData] = useState<T[] | null>([]);
+const useAvion = <T>(url: string, options: XhrOptions) => {
+  const [data, setData] = useState<T[] | null>();
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const { method, data: args, headers, responseType, timeout } = options;
+
   useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      let json = await avion({
-        method: method,
-        headers: headers,
-        url: url,
-        data: args,
-        responseType: 'json',
-      });
-      return json;
-    };
-    fetchData()
-      .then((res) => {
-        setIsLoading(false);
-        const j: any = res.json();
-        if (j.error === 0) {
-          setData(j.items);
-        } else {
-          setError(j.msg);
-          setData([]);
-        }
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        setError(err);
-        setData([]);
-      });
+    if (args) {
+      fetchWithParams(url, method, headers, responseType, timeout, args)
+        .then((res) => {
+          handleResponse(res);
+        })
+        .catch((err) => {
+          handleError(err);
+        });
+    } else {
+      fetch(url, method)
+        .then((res) => {
+          handleResponse(res);
+        })
+        .catch((err) => {
+          handleError(err);
+        });
+    }
+    return () => {};
   }, [url]);
 
-  return [data, error, isLoading] as const;
+  const getKey = (j: any) => {
+    let result = '';
+    Object.keys(j).forEach((k) => {
+      if (k !== 'error' && k !== 'success' && k !== 'msg') {
+        result = k;
+      }
+    });
+    return result;
+  };
+
+  const handleResponse = (res: AvionResult) => {
+    setIsLoading(false);
+    const j: any = res.json();
+    const key = getKey(j);
+    if (j.error === 0) {
+      setData(j[key]);
+    } else {
+      setError(j.msg || j.stack);
+      setData([]);
+    }
+  };
+
+  const handleError = (err: any) => {
+    setError(err);
+    setIsLoading(false);
+    setData([]);
+  };
+
+  return [data, error, isLoading];
 };
 
 export default useAvion;

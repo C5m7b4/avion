@@ -162,3 +162,266 @@ btn7.addEventListener('click', async () => {
   });
 });
 ```
+
+## Newest feature (avion hook)
+
+### useAvion()
+
+usage:
+
+```js
+  const [data, error, isLoading] = useAvion('http://localhost:3001/courses')
+
+```
+
+This is partly dependant on the shape of what you are getting back from your api. I always return something like this from my apis (always in .NET core):
+
+```js
+return Ok(new {
+  error = 0,
+  success = true,
+  data
+})
+```
+
+In this example, data would be an array of the data that this endpoint generates, so the hook will do a forEach on the response to return an array of the key that is not error or success. Then the body of the component could look something like this:
+
+```js
+{isLoading ? (<div className="loader">Loading...</div>) : null}
+{error && (<div className="error">{error}</div>)}
+{data && data.length > 0 ? 
+  (
+    <div>
+      {data.map((d, i) => (
+        <div key={`course-${i}`}>
+          <span>{d.courseName}</span>
+          <span>{d.attendees}</span>
+        </div>
+      ))}
+    </div>
+  ) : 
+  (
+    <div>There are no records to display</div>
+  )}
+
+```
+
+Arguments to the hook look like this:
+
+```js
+  url: string,
+  method: VERB = 'GET',
+  headers = { 'Content-Type': 'application/json' },
+  responseType: ResponseType = 'json',
+  args: any
+
+```
+
+Say you want to post a form-type response and use the hook. This is what that would look like:
+
+```js
+import {useAvion, stringify} from 'avion';
+
+...
+const [data, error, isLoading] = useAvion(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    data: stringify({
+      Id: 1,
+      firstName: "mike",
+      lastName: "bedingfield",
+    }),
+  });
+
+```
+
+Normally you would use another third party library like qs, but we build stringify into the avion package so you can just use the built in stringify function;
+
+Then just to clarify what the backend should look like if you are using .NET core:
+
+```js
+namespace MikToApi.Models
+{
+    public class Test
+    {
+        public int Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+
+    }
+}
+
+[HttpPost]
+[AllowAnonymous]
+[Route("post")]
+public ActionResult PostSomeData([FromForm] Test test)
+{
+    try
+    {             
+
+        if ( test.Id != 0)
+        {
+            return Ok(new
+            {
+                error = 0,
+                success = true,
+                test
+            });
+        }
+        else
+        {
+            return Ok(new
+            {
+                error = 2,
+                success = false
+            });
+        }
+        
+    }
+    catch (Exception)
+    {
+        return Ok(new
+        {
+            error = 1,
+            success = false,
+            msg = "An internal error occured"
+        });
+    }
+}
+
+```
+
+An alternative to posting to the Form would be post to the Body and that would look like this:
+
+```js
+
+async function bodyPost() {
+  let json = await avion({
+    method: "POST",
+    cors: true,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    url: "https://localhost:44354/api/interview/bodypost",
+    data: {
+      id: 1,
+      firstName: "mike",
+      lastName: "bedingfield",
+    },
+  });
+  return json;
+}
+
+```
+
+And the backend would look like this:
+
+```js
+[HttpPost]
+[AllowAnonymous]
+[Route("bodypost")]
+public ActionResult BodyPostSomeData([FromBody] Test test)
+{
+    try
+    {
+
+        if (test.Id != 0)
+        {
+            return Ok(new
+            {
+                error = 0,
+                success = true,
+                test
+            });
+        }
+        else
+        {
+            return Ok(new
+            {
+                error = 2,
+                success = false
+            });
+        }
+
+    }
+    catch (Exception)
+    {
+        return Ok(new
+        {
+            error = 1,
+            success = false,
+            msg = "An internal error occured"
+        });
+    }
+}
+```
+
+Now, let's say that you want to use the hook for a PUT request. Here is what that looks like when using FromForm:
+
+```js
+import { useAvion, stringify } from "avion";
+
+
+const [data, error, isLoading] = useAvion(
+    "https://localhost:44354/api/interview/formput",
+    {
+      method: "PUT",
+      cors: true,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      data: stringify({
+        id: 1,
+        firstName: "mike",
+        lastName: "bedingfield",
+      }),
+    }
+  );
+
+```
+
+And the backend will look like this:
+
+```js
+
+[HttpPut]
+[AllowAnonymous]
+[Route("formput")]
+public ActionResult PutFormTest([FromForm] Test test)
+{
+    try
+    {
+        if ( test.Id != 0)
+        {
+            return Ok(new
+            {
+                error = 0,
+                success = true,
+                test
+            });
+        }
+        else
+        {
+            return Ok(new
+            {
+                error = 2,
+                success = false,
+                msg = "Missing Id"
+            });
+        }
+    }
+    catch (Exception)
+    {
+        return Ok(new
+        {
+            error = 1,
+            success = false,
+            msg = "An internal error occured"
+        });
+    }
+}
+
+```

@@ -6,13 +6,15 @@ export enum READY_STATES {
   DONE,
 }
 
-export enum VERBS {
-  GET = 'GET',
-  POST = 'POST',
-  PUT = 'PUT',
-  PATCH = 'PATCH',
-  DELETE = 'DELETE',
-}
+// export enum VERBS {
+//   GET = 'GET',
+//   POST = 'POST',
+//   PUT = 'PUT',
+//   PATCH = 'PATCH',
+//   DELETE = 'DELETE',
+// }
+
+export type VERB = 'GET' | 'PUT' | 'POST' | 'DELETE' | 'PATCH';
 
 export type ResponseType =
   | 'arraybuffer'
@@ -23,9 +25,9 @@ export type ResponseType =
 
 export interface XhrOptions {
   url: string;
-  method: VERBS;
+  method: VERB;
   cors?: boolean;
-  data: any;
+  data?: any;
   headers: any;
   responseType: ResponseType;
   ignoreCache?: boolean;
@@ -52,7 +54,7 @@ export const DEFAULT_REQUEST_OPTIONS: RequestOptions = {
   headers: {
     Accept: 'applicaiton/json, text/javascript, text/plain',
   },
-  timeout: 5000,
+  timeout: 0,
 };
 
 export interface AvionResult {
@@ -65,7 +67,7 @@ export interface AvionResult {
   responseUrl: string;
 }
 
-export interface AvionResponse<T = any, D = any> {
+export interface AvionResponse<T = any> {
   data: T;
   status: number;
   statusText: string;

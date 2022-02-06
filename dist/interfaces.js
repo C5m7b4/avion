@@ -6,18 +6,10 @@ export var READY_STATES;
     READY_STATES[READY_STATES["LOADING"] = 3] = "LOADING";
     READY_STATES[READY_STATES["DONE"] = 4] = "DONE";
 })(READY_STATES || (READY_STATES = {}));
-export var VERBS;
-(function (VERBS) {
-    VERBS["GET"] = "GET";
-    VERBS["POST"] = "POST";
-    VERBS["PUT"] = "PUT";
-    VERBS["PATCH"] = "PATCH";
-    VERBS["DELETE"] = "DELETE";
-})(VERBS || (VERBS = {}));
 export const DEFAULT_REQUEST_OPTIONS = {
     ignoreCache: false,
     headers: {
         Accept: 'applicaiton/json, text/javascript, text/plain',
     },
-    timeout: 5000,
+    timeout: 0,
 };

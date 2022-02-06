@@ -5,19 +5,13 @@ export declare enum READY_STATES {
     LOADING = 3,
     DONE = 4
 }
-export declare enum VERBS {
-    GET = "GET",
-    POST = "POST",
-    PUT = "PUT",
-    PATCH = "PATCH",
-    DELETE = "DELETE"
-}
+export declare type VERB = 'GET' | 'PUT' | 'POST' | 'DELETE' | 'PATCH';
 export declare type ResponseType = 'arraybuffer' | 'blob' | 'document' | 'json' | 'text';
 export interface XhrOptions {
     url: string;
-    method: VERBS;
+    method: VERB;
     cors?: boolean;
-    data: any;
+    data?: any;
     headers: any;
     responseType: ResponseType;
     ignoreCache?: boolean;
@@ -48,7 +42,7 @@ export interface AvionResult {
     headers: string;
     responseUrl: string;
 }
-export interface AvionResponse<T = any, D = any> {
+export interface AvionResponse<T = any> {
     data: T;
     status: number;
     statusText: string;

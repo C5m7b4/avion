@@ -1,7 +1,5 @@
 import avion from './avion';
-export { VERBS, READY_STATES, } from './interfaces';
-// export { get } from './Get';
-// export { post } from './Post';
-// export { put } from './Put';
-// export { del } from './Delete';
+export { default as useAvion } from './useAvion';
+export { stringify } from './utils';
+export { READY_STATES, } from './interfaces';
 export default avion;

@@ -17,6 +17,7 @@ export default [
       commonjs(),
       typescript({ tsconfig: './tsconfig.json' }),
     ],
+    external: ['react'],
   },
 
   // CommonJS (for Node) and ES module (for bundlers) build.
@@ -32,5 +33,6 @@ export default [
       { file: pkg.module, format: 'es' },
     ],
     plugins: [typescript({ tsconfig: './tsconfig.json' })],
+    external: ['react'],
   },
 ];
