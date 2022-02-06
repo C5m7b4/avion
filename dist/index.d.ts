@@ -10,7 +10,7 @@ export default avion;
 export declare interface AvionPromise<T = any> extends Promise<AvionResponse<T>> {
 }
 
-export declare interface AvionResponse<T = any, D = any> {
+export declare interface AvionResponse<T = any> {
     data: T;
     status: number;
     statusText: string;
@@ -52,19 +52,17 @@ export declare interface RequestOptions {
 declare type ResponseType_2 = 'arraybuffer' | 'blob' | 'document' | 'json' | 'text';
 export { ResponseType_2 as ResponseType }
 
-export declare enum VERBS {
-    GET = "GET",
-    POST = "POST",
-    PUT = "PUT",
-    PATCH = "PATCH",
-    DELETE = "DELETE"
-}
+export declare const stringify: (e: any) => string;
+
+export declare const useAvion: <T>(url: string, options: XhrOptions) => (string | boolean | T[] | null | undefined)[];
+
+export declare type VERB = 'GET' | 'PUT' | 'POST' | 'DELETE' | 'PATCH';
 
 export declare interface XhrOptions {
     url: string;
-    method: VERBS;
+    method: VERB;
     cors?: boolean;
-    data: any;
+    data?: any;
     headers: any;
     responseType: ResponseType_2;
     ignoreCache?: boolean;
