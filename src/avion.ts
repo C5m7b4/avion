@@ -1,25 +1,45 @@
-import {
-  VERBS,
-  XhrOptions,
-  ResponseType,
-  AvionResult,
-  DEFAULT_REQUEST_OPTIONS,
-} from './interfaces';
+import { XhrOptions, AvionResult, DEFAULT_REQUEST_OPTIONS } from './interfaces';
 import { get } from './Get';
 import { del } from './Delete';
 import { put } from './Put';
 import { post } from './Post';
 
 export function parseXHRResult(xhr: XMLHttpRequest): AvionResult {
-  return {
-    ok: xhr.status >= 200 && xhr.status < 300,
-    status: xhr.status,
-    statusText: xhr.statusText,
-    headers: xhr.getAllResponseHeaders(),
-    data: xhr.response || xhr.responseText,
-    json: () => JSON.parse(xhr.responseText) || JSON.parse(xhr.response.data),
-    responseUrl: xhr.responseURL,
-  };
+  try {
+    const result = {
+      ok: xhr.status >= 200 && xhr.status < 300,
+      status: xhr.status,
+      statusText: xhr.statusText,
+      headers: xhr.getAllResponseHeaders(),
+      data: xhr.response || xhr.responseText || '',
+      json: () => getJson(xhr),
+      responseUrl: xhr.responseURL,
+    };
+    return result;
+  } catch (error) {
+    const result = {
+      ok: xhr.status >= 200 && xhr.status < 300,
+      status: xhr.status,
+      statusText: xhr.statusText,
+      headers: xhr.getAllResponseHeaders(),
+      data: '',
+      json: () => getJson(xhr),
+      responseUrl: xhr.responseURL,
+    };
+    return result;
+  }
+}
+
+export function getJson(xhr: XMLHttpRequest) {
+  try {
+    if (xhr.response) {
+      return JSON.parse(JSON.stringify(xhr.response));
+    } else if (xhr.responseText) {
+      return JSON.parse(xhr.responseText);
+    }
+  } catch (error) {
+    return JSON.parse(JSON.stringify(error));
+  }
 }
 
 export function errorResponse(
@@ -43,7 +63,7 @@ const avion = (options: XhrOptions) => {
   const headers = options.headers || DEFAULT_REQUEST_OPTIONS.headers;
   const timeout = options.timeout || DEFAULT_REQUEST_OPTIONS.timeout;
 
-  return new Promise<AvionResult>((resolve, reject) => {
+  return new Promise<AvionResult>((resolve) => {
     const xhr = new XMLHttpRequest();
     xhr.open(options.method, options.url);
 
@@ -54,9 +74,10 @@ const avion = (options: XhrOptions) => {
         xhr.responseType = 'json';
       }
       if (headers) {
-        Object.keys(options).forEach((key) =>
-          xhr.setRequestHeader(key, headers[key])
-        );
+        Object.keys(headers).forEach((key) => {
+          console.log('setting header ' + key);
+          xhr.setRequestHeader(key, headers[key]);
+        });
       } else {
         if (options.data) {
           xhr.setRequestHeader('Content-Type', 'application/json');
@@ -70,19 +91,23 @@ const avion = (options: XhrOptions) => {
 
     xhr.timeout = timeout;
 
-    xhr.onload = (evt) => {
+    xhr.onload = () => {
       resolve(parseXHRResult(xhr));
     };
 
-    xhr.onerror = (evt) => {
+    xhr.onerror = () => {
       resolve(errorResponse(xhr, 'Request failed'));
     };
 
-    xhr.ontimeout = (evt) => {
+    xhr.ontimeout = () => {
       resolve(errorResponse(xhr, 'Request timed out'));
     };
 
-    xhr.send(JSON.stringify(options.data));
+    if (typeof options.data == 'string') {
+      xhr.send(options.data);
+    } else {
+      xhr.send(JSON.stringify(options.data));
+    }
   });
 };
 
