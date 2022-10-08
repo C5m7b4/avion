@@ -3,6 +3,7 @@ import { get } from './Get';
 import { del } from './Delete';
 import { put } from './Put';
 import { post } from './Post';
+import { Queue } from './Queue';
 
 export function parseXHRResult(xhr: XMLHttpRequest): AvionResult {
   try {
@@ -115,5 +116,6 @@ avion.get = get;
 avion.post = post;
 avion.put = put;
 avion.del = del;
+avion.queue = Queue;
 
 export default avion;

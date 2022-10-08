@@ -75,4 +75,10 @@ export interface AvionResponse<T = any> {
   request?: any;
 }
 
+export interface IQueue<T> {
+  enqueue(item: T): void;
+  dequeue(): T | undefined;
+  size(): number;
+}
+
 export interface AvionPromise<T = any> extends Promise<AvionResponse<T>> {}
