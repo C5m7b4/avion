@@ -2,184 +2,179 @@ import { useState, useEffect } from 'react';
 
 var READY_STATES;
 (function (READY_STATES) {
-    READY_STATES[READY_STATES["UNSEND"] = 0] = "UNSEND";
-    READY_STATES[READY_STATES["OPENED"] = 1] = "OPENED";
-    READY_STATES[READY_STATES["HEADERS_RECIEVED"] = 2] = "HEADERS_RECIEVED";
-    READY_STATES[READY_STATES["LOADING"] = 3] = "LOADING";
-    READY_STATES[READY_STATES["DONE"] = 4] = "DONE";
+  READY_STATES[(READY_STATES['UNSEND'] = 0)] = 'UNSEND';
+  READY_STATES[(READY_STATES['OPENED'] = 1)] = 'OPENED';
+  READY_STATES[(READY_STATES['HEADERS_RECIEVED'] = 2)] = 'HEADERS_RECIEVED';
+  READY_STATES[(READY_STATES['LOADING'] = 3)] = 'LOADING';
+  READY_STATES[(READY_STATES['DONE'] = 4)] = 'DONE';
 })(READY_STATES || (READY_STATES = {}));
 const DEFAULT_REQUEST_OPTIONS = {
-    ignoreCache: false,
-    headers: {
-        Accept: 'application/json, text/javascript, text/plain',
-    },
-    timeout: 0,
+  ignoreCache: false,
+  headers: {
+    Accept: 'application/json, text/javascript, text/plain',
+  },
+  timeout: 0,
 };
 
 const get = function (url) {
-    return new Promise((resolve) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', url);
-        xhr.onload = () => {
-            resolve(parseXHRResult(xhr));
-        };
-        xhr.onerror = () => {
-            resolve(errorResponse(xhr, 'Request failed'));
-        };
-        xhr.ontimeout = () => {
-            resolve(errorResponse(xhr, 'Request timed out'));
-        };
-        xhr.send();
-    });
+  return new Promise((resolve) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.onload = () => {
+      resolve(parseXHRResult(xhr));
+    };
+    xhr.onerror = () => {
+      resolve(errorResponse(xhr, 'Request failed'));
+    };
+    xhr.ontimeout = () => {
+      resolve(errorResponse(xhr, 'Request timed out'));
+    };
+    xhr.send();
+  });
 };
 
 const del = function (url, id) {
-    return new Promise((resolve) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open('DELETE', url + '/' + id);
-        xhr.onload = () => {
-            resolve(parseXHRResult(xhr));
-        };
-        xhr.onerror = () => {
-            resolve(errorResponse(xhr, 'Request failed'));
-        };
-        xhr.ontimeout = () => {
-            resolve(errorResponse(xhr, 'Request timed out'));
-        };
-        xhr.send();
-    });
+  return new Promise((resolve) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('DELETE', url + '/' + id);
+    xhr.onload = () => {
+      resolve(parseXHRResult(xhr));
+    };
+    xhr.onerror = () => {
+      resolve(errorResponse(xhr, 'Request failed'));
+    };
+    xhr.ontimeout = () => {
+      resolve(errorResponse(xhr, 'Request timed out'));
+    };
+    xhr.send();
+  });
 };
 
 const put = function (url, data) {
-    return new Promise((resolve) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open('PUT', url);
-        xhr.onload = () => {
-            resolve(parseXHRResult(xhr));
-        };
-        xhr.onerror = () => {
-            resolve(errorResponse(xhr, 'Request failed'));
-        };
-        xhr.ontimeout = () => {
-            resolve(errorResponse(xhr, 'Request timed out'));
-        };
-        xhr.send(JSON.stringify(data));
-    });
+  return new Promise((resolve) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('PUT', url);
+    xhr.onload = () => {
+      resolve(parseXHRResult(xhr));
+    };
+    xhr.onerror = () => {
+      resolve(errorResponse(xhr, 'Request failed'));
+    };
+    xhr.ontimeout = () => {
+      resolve(errorResponse(xhr, 'Request timed out'));
+    };
+    xhr.send(JSON.stringify(data));
+  });
 };
 
 const post = function (url, data) {
-    return new Promise((resolve) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', url);
-        xhr.onload = () => {
-            resolve(parseXHRResult(xhr));
-        };
-        xhr.onerror = () => {
-            resolve(errorResponse(xhr, 'Request failed'));
-        };
-        xhr.ontimeout = () => {
-            resolve(errorResponse(xhr, 'Request timed out'));
-        };
-        xhr.send(JSON.stringify(data));
-    });
+  return new Promise((resolve) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', url);
+    xhr.onload = () => {
+      resolve(parseXHRResult(xhr));
+    };
+    xhr.onerror = () => {
+      resolve(errorResponse(xhr, 'Request failed'));
+    };
+    xhr.ontimeout = () => {
+      resolve(errorResponse(xhr, 'Request timed out'));
+    };
+    xhr.send(JSON.stringify(data));
+  });
 };
 
 function parseXHRResult(xhr) {
-    try {
-        const result = {
-            ok: xhr.status >= 200 && xhr.status < 300,
-            status: xhr.status,
-            statusText: xhr.statusText,
-            headers: xhr.getAllResponseHeaders(),
-            data: xhr.response || xhr.responseText || '',
-            json: () => getJson(xhr),
-            responseUrl: xhr.responseURL,
-        };
-        return result;
-    }
-    catch (error) {
-        const result = {
-            ok: xhr.status >= 200 && xhr.status < 300,
-            status: xhr.status,
-            statusText: xhr.statusText,
-            headers: xhr.getAllResponseHeaders(),
-            data: '',
-            json: () => getJson(xhr),
-            responseUrl: xhr.responseURL,
-        };
-        return result;
-    }
+  try {
+    const result = {
+      ok: xhr.status >= 200 && xhr.status < 300,
+      status: xhr.status,
+      statusText: xhr.statusText,
+      headers: xhr.getAllResponseHeaders(),
+      data: xhr.response || xhr.responseText || '',
+      json: () => getJson(xhr),
+      responseUrl: xhr.responseURL,
+    };
+    return result;
+  } catch (error) {
+    const result = {
+      ok: xhr.status >= 200 && xhr.status < 300,
+      status: xhr.status,
+      statusText: xhr.statusText,
+      headers: xhr.getAllResponseHeaders(),
+      data: '',
+      json: () => getJson(xhr),
+      responseUrl: xhr.responseURL,
+    };
+    return result;
+  }
 }
 function getJson(xhr) {
-    try {
-        if (xhr.response) {
-            return JSON.parse(JSON.stringify(xhr.response));
-        }
-        else if (xhr.responseText) {
-            return JSON.parse(xhr.responseText);
-        }
+  try {
+    if (xhr.response) {
+      return JSON.parse(JSON.stringify(xhr.response));
+    } else if (xhr.responseText) {
+      return JSON.parse(xhr.responseText);
     }
-    catch (error) {
-        return JSON.parse(JSON.stringify(error));
-    }
+  } catch (error) {
+    return JSON.parse(JSON.stringify(error));
+  }
 }
 function errorResponse(xhr, message = null) {
-    return {
-        ok: false,
-        status: xhr.status,
-        statusText: xhr.statusText,
-        headers: xhr.getAllResponseHeaders(),
-        data: message || xhr.statusText,
-        json: () => JSON.parse(message || xhr.statusText),
-        responseUrl: xhr.responseURL,
-    };
+  return {
+    ok: false,
+    status: xhr.status,
+    statusText: xhr.statusText,
+    headers: xhr.getAllResponseHeaders(),
+    data: message || xhr.statusText,
+    json: () => JSON.parse(message || xhr.statusText),
+    responseUrl: xhr.responseURL,
+  };
 }
 const avion = (options) => {
-    const ignoreCache = options.ignoreCache || DEFAULT_REQUEST_OPTIONS.ignoreCache;
-    const headers = options.headers || DEFAULT_REQUEST_OPTIONS.headers;
-    const timeout = options.timeout || DEFAULT_REQUEST_OPTIONS.timeout;
-    return new Promise((resolve) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open(options.method, options.url);
-        if (options) {
-            if (options.responseType) {
-                xhr.responseType = options.responseType;
-            }
-            else {
-                xhr.responseType = 'json';
-            }
-            if (headers) {
-                Object.keys(headers).forEach((key) => {
-                    console.log('setting header ' + key);
-                    xhr.setRequestHeader(key, headers[key]);
-                });
-            }
-            else {
-                if (options.data) {
-                    xhr.setRequestHeader('Content-Type', 'application/json');
-                }
-            }
+  const ignoreCache =
+    options.ignoreCache || DEFAULT_REQUEST_OPTIONS.ignoreCache;
+  const headers = options.headers || DEFAULT_REQUEST_OPTIONS.headers;
+  const timeout = options.timeout || DEFAULT_REQUEST_OPTIONS.timeout;
+  return new Promise((resolve) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open(options.method, options.url);
+    if (options) {
+      if (options.responseType) {
+        xhr.responseType = options.responseType;
+      } else {
+        xhr.responseType = 'json';
+      }
+      if (headers) {
+        Object.keys(headers).forEach((key) => {
+          console.log('setting header ' + key);
+          xhr.setRequestHeader(key, headers[key]);
+        });
+      } else {
+        if (options.data) {
+          xhr.setRequestHeader('Content-Type', 'application/json');
         }
-        if (ignoreCache) {
-            xhr.setRequestHeader('Cache-Control', 'no-cache');
-        }
-        xhr.timeout = timeout;
-        xhr.onload = () => {
-            resolve(parseXHRResult(xhr));
-        };
-        xhr.onerror = () => {
-            resolve(errorResponse(xhr, 'Request failed'));
-        };
-        xhr.ontimeout = () => {
-            resolve(errorResponse(xhr, 'Request timed out'));
-        };
-        if (typeof options.data == 'string') {
-            xhr.send(options.data);
-        }
-        else {
-            xhr.send(JSON.stringify(options.data));
-        }
-    });
+      }
+    }
+    if (ignoreCache) {
+      xhr.setRequestHeader('Cache-Control', 'no-cache');
+    }
+    xhr.timeout = timeout;
+    xhr.onload = () => {
+      resolve(parseXHRResult(xhr));
+    };
+    xhr.onerror = () => {
+      resolve(errorResponse(xhr, 'Request failed'));
+    };
+    xhr.ontimeout = () => {
+      resolve(errorResponse(xhr, 'Request timed out'));
+    };
+    if (typeof options.data == 'string') {
+      xhr.send(options.data);
+    } else {
+      xhr.send(JSON.stringify(options.data));
+    }
+  });
 };
 avion.get = get;
 avion.post = post;
@@ -202,121 +197,147 @@ PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
 
 function __awaiter(thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
+  function adopt(value) {
+    return value instanceof P
+      ? value
+      : new P(function (resolve) {
+          resolve(value);
+        });
+  }
+  return new (P || (P = Promise))(function (resolve, reject) {
+    function fulfilled(value) {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+    function rejected(value) {
+      try {
+        step(generator['throw'](value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+    function step(result) {
+      result.done
+        ? resolve(result.value)
+        : adopt(result.value).then(fulfilled, rejected);
+    }
+    step((generator = generator.apply(thisArg, _arguments || [])).next());
+  });
 }
 
 function fetch(url, method) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const json = yield avion({
-            method,
-            cors: true,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            url: url,
-            timeout: 0,
-            responseType: 'json',
-        });
-        return json;
+  return __awaiter(this, void 0, void 0, function* () {
+    const json = yield avion({
+      method,
+      cors: true,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      url: url,
+      timeout: 0,
+      responseType: 'json',
     });
+    return json;
+  });
 }
-function fetchWithParams(url, method, headers, responseType = 'json', timeout = 0, args) {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (!headers) {
-            headers = {
-                ContentType: 'application/json',
-            };
-        }
-        const json = yield avion({
-            method,
-            headers,
-            url,
-            responseType,
-            timeout,
-            data: args,
-        });
-        return json;
+function fetchWithParams(
+  url,
+  method,
+  headers,
+  responseType = 'json',
+  timeout = 0,
+  args
+) {
+  return __awaiter(this, void 0, void 0, function* () {
+    if (!headers) {
+      headers = {
+        ContentType: 'application/json',
+      };
+    }
+    const json = yield avion({
+      method,
+      headers,
+      url,
+      responseType,
+      timeout,
+      data: args,
     });
+    return json;
+  });
 }
 
 const useAvion = (url, options) => {
-    const [data, setData] = useState();
-    const [error, setError] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const { method, data: args, headers, responseType, timeout } = options;
-    useEffect(() => {
-        if (args) {
-            fetchWithParams(url, method, headers, responseType, timeout, args)
-                .then((res) => {
-                handleResponse(res);
-            })
-                .catch((err) => {
-                handleError(err);
-            });
-        }
-        else {
-            fetch(url, method)
-                .then((res) => {
-                handleResponse(res);
-            })
-                .catch((err) => {
-                handleError(err);
-            });
-        }
-        return () => { };
-    }, [url]);
-    const getKey = (j) => {
-        let result = '';
-        Object.keys(j).forEach((k) => {
-            if (k !== 'error' && k !== 'success' && k !== 'msg') {
-                result = k;
-            }
+  const [data, setData] = useState();
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { method, data: args, headers, responseType, timeout } = options;
+  useEffect(() => {
+    if (args) {
+      fetchWithParams(url, method, headers, responseType, timeout, args)
+        .then((res) => {
+          handleResponse(res);
+        })
+        .catch((err) => {
+          handleError(err);
         });
-        return result;
-    };
-    const handleResponse = (res) => {
-        setIsLoading(false);
-        const j = res.json();
-        const key = getKey(j);
-        if (j.error === 0) {
-            setData(j[key]);
-        }
-        else {
-            setError(j.msg || j.stack);
-            setData([]);
-        }
-    };
-    const handleError = (err) => {
-        setError(err);
-        setIsLoading(false);
-        setData([]);
-    };
-    return [data, error, isLoading];
+    } else {
+      fetch(url, method)
+        .then((res) => {
+          handleResponse(res);
+        })
+        .catch((err) => {
+          handleError(err);
+        });
+    }
+    return () => {};
+  }, [url]);
+  const getKey = (j) => {
+    let result = '';
+    Object.keys(j).forEach((k) => {
+      if (k !== 'error' && k !== 'success' && k !== 'msg') {
+        result = k;
+      }
+    });
+    return result;
+  };
+  const handleResponse = (res) => {
+    setIsLoading(false);
+    const j = res.json();
+    const key = getKey(j);
+    if (j.error === 0) {
+      setData(j[key]);
+    } else {
+      setError(j.msg || j.stack);
+      setData([]);
+    }
+  };
+  const handleError = (err) => {
+    setError(err);
+    setIsLoading(false);
+    setData([]);
+  };
+  return [data, error, isLoading];
 };
 
 const stringify = (e) => {
-    const resultArr = [];
-    for (const property in e) {
-        const line = `${property}=${e[property]}`;
-        resultArr.push(line);
-    }
-    const result = resultArr
-        .map((a, i) => {
-        if (i === 0) {
-            return a;
-        }
-        else {
-            return `&${a}`;
-        }
+  const resultArr = [];
+  for (const property in e) {
+    const line = `${property}=${e[property]}`;
+    resultArr.push(line);
+  }
+  const result = resultArr
+    .map((a, i) => {
+      if (i === 0) {
+        return a;
+      } else {
+        return `&${a}`;
+      }
     })
-        .join('');
-    return result;
+    .join('');
+  return result;
 };
 
 export { READY_STATES, avion as default, stringify, useAvion };

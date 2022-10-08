@@ -15,7 +15,8 @@
     "dev": "rollup -c -w",
     "build": "rollup -c",
     "build:types": "tsc -p ./tsconfig.json --outDir dist --declaration true && api-extractor run",
-    "lint": "eslint \"src/**/*.{ts,tsx}\" --quiet"
+    "lint": "eslint \"src/**/*.{ts,tsx}\" --quiet",
+    "updatePatch": "npm version patch"
   },
   "keywords": [],
   "author": "C5m7b4",
