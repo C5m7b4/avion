@@ -1,5 +1,9 @@
 # avion
 
+![GitHub](https://img.shields.io/github/license/C5m7b4/avion?style=plastic)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/C5m7b4/avion?style=plastic)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/C5m7b4/avion?style=plastic)
+
 A small XMLHttpRequest wrapper that uses promises to wrap the calls.
 
 To install:
