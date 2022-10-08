@@ -15,7 +15,7 @@ exports.READY_STATES = void 0;
 const DEFAULT_REQUEST_OPTIONS = {
     ignoreCache: false,
     headers: {
-        Accept: 'applicaiton/json, text/javascript, text/plain',
+        Accept: 'application/json, text/javascript, text/plain',
     },
     timeout: 0,
 };

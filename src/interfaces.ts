@@ -52,7 +52,7 @@ export interface RequestOptions {
 export const DEFAULT_REQUEST_OPTIONS: RequestOptions = {
   ignoreCache: false,
   headers: {
-    Accept: 'applicaiton/json, text/javascript, text/plain',
+    Accept: 'application/json, text/javascript, text/plain',
   },
   timeout: 0,
 };
