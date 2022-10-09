@@ -5,6 +5,10 @@ import { put } from './Put';
 import { post } from './Post';
 import { Queue } from './Queue';
 
+const requestQueue = new Queue();
+const responseQueue = new Queue();
+const errorQueue = new Queue();
+
 export function parseXHRResult(xhr: XMLHttpRequest): AvionResult {
   try {
     const result = {
@@ -16,6 +20,7 @@ export function parseXHRResult(xhr: XMLHttpRequest): AvionResult {
       json: () => getJson(xhr),
       responseUrl: xhr.responseURL,
     };
+    responseQueue.enqueue(result);
     return result;
   } catch (error) {
     const result = {
@@ -27,6 +32,7 @@ export function parseXHRResult(xhr: XMLHttpRequest): AvionResult {
       json: () => getJson(xhr),
       responseUrl: xhr.responseURL,
     };
+    errorQueue.enqueue(result);
     return result;
   }
 }
@@ -47,7 +53,7 @@ export function errorResponse(
   xhr: XMLHttpRequest,
   message: string | null = null
 ): AvionResult {
-  return {
+  const result = {
     ok: false,
     status: xhr.status,
     statusText: xhr.statusText,
@@ -56,6 +62,8 @@ export function errorResponse(
     json: <T>() => JSON.parse(message || xhr.statusText) as T,
     responseUrl: xhr.responseURL,
   };
+  errorQueue.enqueue(result);
+  return result;
 }
 
 const avion = (options: XhrOptions) => {
@@ -104,6 +112,8 @@ const avion = (options: XhrOptions) => {
       resolve(errorResponse(xhr, 'Request timed out'));
     };
 
+    responseQueue.enqueue(xhr);
+
     if (typeof options.data == 'string') {
       xhr.send(options.data);
     } else {
@@ -112,11 +122,13 @@ const avion = (options: XhrOptions) => {
   });
 };
 
-const avionQueue = new Queue();
 avion.get = get;
 avion.post = post;
 avion.put = put;
 avion.del = del;
-avion.queue = avionQueue;
+// this is going to hold all the requests that have come in
+avion.requestQue = requestQueue;
+avion.responseQueue = responseQueue;
+avion.errorQueue = errorQueue;
 
 export default avion;
