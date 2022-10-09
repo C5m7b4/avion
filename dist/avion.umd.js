@@ -111,6 +111,14 @@
     const requestQueue = new Queue();
     const responseQueue = new Queue();
     const errorQueue = new Queue();
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const onRequestReceived = new CustomEvent('onRequestReceived');
+    window.addEventListener('onRequestReceived', () => {
+        const firstQueuedItem = requestQueue.dequeue();
+        console.log('firstQueuedItem', firstQueuedItem);
+        return firstQueuedItem;
+    });
     function parseXHRResult(xhr) {
         try {
             const result = {
@@ -123,6 +131,7 @@
                 responseUrl: xhr.responseURL,
             };
             responseQueue.enqueue(result);
+            window.dispatchEvent(onRequestReceived);
             return result;
         }
         catch (error) {
@@ -218,9 +227,10 @@
     avion.put = put;
     avion.del = del;
     // this is going to hold all the requests that have come in
-    avion.requestQue = requestQueue;
-    avion.responseQueue = responseQueue;
-    avion.errorQueue = errorQueue;
+    // avion.requestQueue = requestQueue;
+    // avion.responseQueue = responseQueue;
+    // avion.errorQueue = errorQueue;
+    avion.onRequestReceived = onRequestReceived;
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
