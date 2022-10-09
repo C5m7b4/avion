@@ -84,6 +84,7 @@ const post = function (url, data) {
     });
 };
 
+// a queue uses FIFO (first in first out)
 class Queue {
     constructor(capacity = Infinity) {
         this.capacity = capacity;
@@ -103,6 +104,9 @@ class Queue {
     }
 }
 
+const requestQueue = new Queue();
+const responseQueue = new Queue();
+const errorQueue = new Queue();
 function parseXHRResult(xhr) {
     try {
         const result = {
@@ -114,6 +118,7 @@ function parseXHRResult(xhr) {
             json: () => getJson(xhr),
             responseUrl: xhr.responseURL,
         };
+        responseQueue.enqueue(result);
         return result;
     }
     catch (error) {
@@ -126,6 +131,7 @@ function parseXHRResult(xhr) {
             json: () => getJson(xhr),
             responseUrl: xhr.responseURL,
         };
+        errorQueue.enqueue(result);
         return result;
     }
 }
@@ -143,7 +149,7 @@ function getJson(xhr) {
     }
 }
 function errorResponse(xhr, message = null) {
-    return {
+    const result = {
         ok: false,
         status: xhr.status,
         statusText: xhr.statusText,
@@ -152,6 +158,8 @@ function errorResponse(xhr, message = null) {
         json: () => JSON.parse(message || xhr.statusText),
         responseUrl: xhr.responseURL,
     };
+    errorQueue.enqueue(result);
+    return result;
 }
 const avion = (options) => {
     const ignoreCache = options.ignoreCache || DEFAULT_REQUEST_OPTIONS.ignoreCache;
@@ -192,6 +200,7 @@ const avion = (options) => {
         xhr.ontimeout = () => {
             resolve(errorResponse(xhr, 'Request timed out'));
         };
+        responseQueue.enqueue(xhr);
         if (typeof options.data == 'string') {
             xhr.send(options.data);
         }
@@ -200,12 +209,14 @@ const avion = (options) => {
         }
     });
 };
-const avionQueue = new Queue();
 avion.get = get;
 avion.post = post;
 avion.put = put;
 avion.del = del;
-avion.queue = avionQueue;
+// this is going to hold all the requests that have come in
+avion.requestQue = requestQueue;
+avion.responseQueue = responseQueue;
+avion.errorQueue = errorQueue;
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -340,4 +351,4 @@ const stringify = (e) => {
     return result;
 };
 
-export { READY_STATES, avion as default, stringify, useAvion };
+export { Queue, READY_STATES, avion as default, stringify, useAvion };

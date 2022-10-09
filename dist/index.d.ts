@@ -4,7 +4,9 @@ declare const avion: {
     post: (url: string, data: any) => Promise<AvionResult>;
     put: (url: string, data: any) => Promise<AvionResult>;
     del: (url: string, id: string) => Promise<AvionResult>;
-    queue: Queue<unknown>;
+    requestQue: Queue<unknown>;
+    responseQueue: Queue<unknown>;
+    errorQueue: Queue<unknown>;
 };
 export default avion;
 
@@ -34,13 +36,13 @@ export declare interface HeaderInterface {
     value: string;
 }
 
-declare interface IQueue<T> {
+export declare interface IQueue<T> {
     enqueue(item: T): void;
     dequeue(): T | undefined;
     size(): number;
 }
 
-declare class Queue<T> implements IQueue<T> {
+export declare class Queue<T> implements IQueue<T> {
     private capacity;
     private storage;
     constructor(capacity?: number);

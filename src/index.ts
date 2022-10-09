@@ -12,6 +12,9 @@ export {
   ResponseType,
   AvionResponse,
   AvionPromise,
+  IQueue,
 } from './interfaces';
+
+export { Queue } from './Queue';
 
 export default avion;

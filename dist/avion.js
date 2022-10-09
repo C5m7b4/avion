@@ -4,6 +4,9 @@ import { del } from './Delete';
 import { put } from './Put';
 import { post } from './Post';
 import { Queue } from './Queue';
+const requestQueue = new Queue();
+const responseQueue = new Queue();
+const errorQueue = new Queue();
 export function parseXHRResult(xhr) {
     try {
         const result = {
@@ -15,6 +18,7 @@ export function parseXHRResult(xhr) {
             json: () => getJson(xhr),
             responseUrl: xhr.responseURL,
         };
+        responseQueue.enqueue(result);
         return result;
     }
     catch (error) {
@@ -27,6 +31,7 @@ export function parseXHRResult(xhr) {
             json: () => getJson(xhr),
             responseUrl: xhr.responseURL,
         };
+        errorQueue.enqueue(result);
         return result;
     }
 }
@@ -44,7 +49,7 @@ export function getJson(xhr) {
     }
 }
 export function errorResponse(xhr, message = null) {
-    return {
+    const result = {
         ok: false,
         status: xhr.status,
         statusText: xhr.statusText,
@@ -53,6 +58,8 @@ export function errorResponse(xhr, message = null) {
         json: () => JSON.parse(message || xhr.statusText),
         responseUrl: xhr.responseURL,
     };
+    errorQueue.enqueue(result);
+    return result;
 }
 const avion = (options) => {
     const ignoreCache = options.ignoreCache || DEFAULT_REQUEST_OPTIONS.ignoreCache;
@@ -93,6 +100,7 @@ const avion = (options) => {
         xhr.ontimeout = () => {
             resolve(errorResponse(xhr, 'Request timed out'));
         };
+        responseQueue.enqueue(xhr);
         if (typeof options.data == 'string') {
             xhr.send(options.data);
         }
@@ -101,10 +109,12 @@ const avion = (options) => {
         }
     });
 };
-const avionQueue = new Queue();
 avion.get = get;
 avion.post = post;
 avion.put = put;
 avion.del = del;
-avion.queue = avionQueue;
+// this is going to hold all the requests that have come in
+avion.requestQue = requestQueue;
+avion.responseQueue = responseQueue;
+avion.errorQueue = errorQueue;
 export default avion;

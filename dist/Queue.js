@@ -1,3 +1,4 @@
+// a queue uses FIFO (first in first out)
 export class Queue {
     constructor(capacity = Infinity) {
         this.capacity = capacity;

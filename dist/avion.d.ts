@@ -9,6 +9,8 @@ declare const avion: {
     post: (url: string, data: any) => Promise<AvionResult>;
     put: (url: string, data: any) => Promise<AvionResult>;
     del: (url: string, id: string) => Promise<AvionResult>;
-    queue: Queue<unknown>;
+    requestQue: Queue<unknown>;
+    responseQueue: Queue<unknown>;
+    errorQueue: Queue<unknown>;
 };
 export default avion;
