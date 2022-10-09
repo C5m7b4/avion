@@ -111,6 +111,14 @@ class Queue {
 const requestQueue = new Queue();
 const responseQueue = new Queue();
 const errorQueue = new Queue();
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+const requestReceived = new CustomEvent('onRequestReceived');
+window.addEventListener('onRequestReceived', () => {
+    const firstQueuedItem = requestQueue.dequeue();
+    console.log('firstQueuedItem', firstQueuedItem);
+    return firstQueuedItem;
+});
 function parseXHRResult(xhr) {
     try {
         const result = {
@@ -123,6 +131,7 @@ function parseXHRResult(xhr) {
             responseUrl: xhr.responseURL,
         };
         responseQueue.enqueue(result);
+        window.dispatchEvent(requestReceived);
         return result;
     }
     catch (error) {
@@ -218,7 +227,7 @@ avion.post = post;
 avion.put = put;
 avion.del = del;
 // this is going to hold all the requests that have come in
-avion.requestQue = requestQueue;
+avion.requestQueue = requestQueue;
 avion.responseQueue = responseQueue;
 avion.errorQueue = errorQueue;
 
