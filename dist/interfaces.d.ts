@@ -49,5 +49,10 @@ export interface AvionResponse<T = any> {
     headers: Record<string, string | number | boolean>;
     request?: any;
 }
+export interface IQueue<T> {
+    enqueue(item: T): void;
+    dequeue(): T | undefined;
+    size(): number;
+}
 export interface AvionPromise<T = any> extends Promise<AvionResponse<T>> {
 }

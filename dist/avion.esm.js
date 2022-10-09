@@ -200,11 +200,12 @@ const avion = (options) => {
         }
     });
 };
+const avionQueue = new Queue();
 avion.get = get;
 avion.post = post;
 avion.put = put;
 avion.del = del;
-avion.queue = Queue;
+avion.queue = avionQueue;
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
