@@ -1,6 +1,6 @@
 {
   "name": "avion",
-  "version": "0.0.18",
+  "version": "0.1.1",
   "description": "Small XMLHttpRequest library",
   "main": "dist/avion.cjs.js",
   "module": "dist/avion.esm.js",
@@ -15,9 +15,7 @@
     "dev": "rollup -c -w",
     "build": "rollup -c",
     "build:types": "tsc -p ./tsconfig.json --outDir dist --declaration true && api-extractor run",
-    "lint": "eslint \"src/**/*.{ts,tsx}\" --quiet",
-    "updatePatch": "npm version patch",
-    "publish": "npm publish"
+    "lint": "eslint \"src/**/*.{ts,tsx}\" --quiet"
   },
   "keywords": [],
   "author": "C5m7b4",
