@@ -431,3 +431,27 @@ public ActionResult PutFormTest([FromForm] Test test)
 }
 
 ```
+
+## New Feature 10/8/2022
+
+You now have the ability to do a form of log capturing. In other words to can have personal access to a queue of all request options that you are sending. Of course, code and images might do this concept a little more justice:
+
+Say, for example, you were developing a mobile app and needed a way to monitor you app from a remote server. This is how you would scaffold that code out.
+
+```js
+avion.enableRequestQueue(true);
+
+window.addEventListener('onAvionRequestReceived', () => {
+  const firstQueuedRequest = avion.requestQueue.dequeue();
+  // now have to just accessed the first item on the queue and remove it from the queue
+  console.log('avion request', firstQueuedRequest)
+})
+```
+
+This is what it would look like in the console. Of course you could shoot this up to your remote, but you would definately need some more logic in this function so that you don't find yourself in an infinte loop. Maybe something like this
+
+```js
+const excludeUrls = ['https://someServer/api/logs/logRequestOptions']
+```
+
+and then in your function, just grab the url out after you dequeue it and then do nothing with that. 
