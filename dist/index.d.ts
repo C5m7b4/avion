@@ -5,8 +5,14 @@ declare const avion: {
     put: (url: string, data: any) => Promise<AvionResult>;
     del: (url: string, id: string) => Promise<AvionResult>;
     enableRequestQueue(v: boolean): void;
+    enableErrorQueue(v: boolean): void;
+    enableResponseQueue(v: boolean): void;
     requestQueue: Queue<unknown>;
+    errorQueue: Queue<unknown>;
+    responseQueue: Queue<unknown>;
     onRequestReceived: CustomEvent<unknown>;
+    onErrorReceived: CustomEvent<unknown>;
+    onResponseReceived: CustomEvent<unknown>;
 };
 export default avion;
 

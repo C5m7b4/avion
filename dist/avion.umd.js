@@ -109,17 +109,14 @@
     }
 
     let enableRequestQueue = false;
+    let enableErrorQueue = false;
+    let enableResponseQueue = false;
     const requestQueue = new Queue();
-    // const responseQueue = new Queue();
-    // const errorQueue = new Queue();
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    const errorQueue = new Queue();
+    const responseQueue = new Queue();
     const onAvionRequestReceived = new CustomEvent('onAvionRequestReceived');
-    // window.addEventListener('onRequestReceived', () => {
-    //   const firstQueuedItem = requestQueue.dequeue();
-    //   console.log('firstQueuedItem', firstQueuedItem);
-    //   return firstQueuedItem;
-    // });
+    const onAvionErrorReceived = new CustomEvent('onAvionErrorReceived');
+    const onAvionResponseReceived = new CustomEvent('onAvionResponseReceived');
     function parseXHRResult(xhr) {
         try {
             const result = {
@@ -131,8 +128,10 @@
                 json: () => getJson(xhr),
                 responseUrl: xhr.responseURL,
             };
-            // requestQueue.enqueue(result);
-            // window.dispatchEvent(onRequestReceived);
+            if (enableResponseQueue) {
+                responseQueue.enqueue(result);
+                window.dispatchEvent(onAvionResponseReceived);
+            }
             return result;
         }
         catch (error) {
@@ -145,7 +144,10 @@
                 json: () => getJson(xhr),
                 responseUrl: xhr.responseURL,
             };
-            // errorQueue.enqueue(result);
+            if (enableErrorQueue) {
+                errorQueue.enqueue(result);
+                window.dispatchEvent(onAvionErrorReceived);
+            }
             return result;
         }
     }
@@ -172,7 +174,10 @@
             json: () => JSON.parse(message || xhr.statusText),
             responseUrl: xhr.responseURL,
         };
-        // errorQueue.enqueue(result);
+        if (enableErrorQueue) {
+            errorQueue.enqueue(result);
+            window.dispatchEvent(onAvionErrorReceived);
+        }
         return result;
     }
     const avion = (options) => {
@@ -233,11 +238,19 @@
     avion.enableRequestQueue = (v) => {
         enableRequestQueue = v;
     };
+    avion.enableErrorQueue = (v) => {
+        enableErrorQueue = v;
+    };
+    avion.enableResponseQueue = (v) => {
+        enableResponseQueue = v;
+    };
     // this is going to hold all the requests that have come in
     avion.requestQueue = requestQueue;
-    // avion.responseQueue = responseQueue;
-    // avion.errorQueue = errorQueue;
+    avion.errorQueue = errorQueue;
+    avion.responseQueue = responseQueue;
     avion.onRequestReceived = onAvionRequestReceived;
+    avion.onErrorReceived = onAvionErrorReceived;
+    avion.onResponseReceived = onAvionResponseReceived;
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
