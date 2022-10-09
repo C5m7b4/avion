@@ -29,7 +29,6 @@ export function parseXHRResult(xhr: XMLHttpRequest): AvionResult {
       json: () => getJson(xhr),
       responseUrl: xhr.responseURL,
     };
-    responseQueue.enqueue(result);
     window.dispatchEvent(onRequestReceived);
     return result;
   } catch (error) {
@@ -122,7 +121,8 @@ const avion = (options: XhrOptions) => {
       resolve(errorResponse(xhr, 'Request timed out'));
     };
 
-    responseQueue.enqueue(xhr);
+    requestQueue.enqueue(xhr);
+    window.dispatchEvent(onRequestReceived);
 
     if (typeof options.data == 'string') {
       xhr.send(options.data);
