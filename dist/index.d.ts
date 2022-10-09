@@ -4,7 +4,7 @@ declare const avion: {
     post: (url: string, data: any) => Promise<AvionResult>;
     put: (url: string, data: any) => Promise<AvionResult>;
     del: (url: string, id: string) => Promise<AvionResult>;
-    enableRequestQueue: boolean;
+    enableRequestQueue(v: boolean): void;
     requestQueue: Queue<unknown>;
     onRequestReceived: CustomEvent<unknown>;
 };

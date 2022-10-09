@@ -4,7 +4,7 @@ import { del } from './Delete';
 import { put } from './Put';
 import { post } from './Post';
 import { Queue } from './Queue';
-const enableRequestQueue = false;
+let enableRequestQueue = false;
 const requestQueue = new Queue();
 // const responseQueue = new Queue();
 // const errorQueue = new Queue();
@@ -126,7 +126,9 @@ avion.get = get;
 avion.post = post;
 avion.put = put;
 avion.del = del;
-avion.enableRequestQueue = enableRequestQueue;
+avion.enableRequestQueue = (v) => {
+    enableRequestQueue = v;
+};
 // this is going to hold all the requests that have come in
 avion.requestQueue = requestQueue;
 // avion.responseQueue = responseQueue;
