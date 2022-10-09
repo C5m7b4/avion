@@ -108,17 +108,18 @@
         }
     }
 
+    const enableRequestQueue = false;
     const requestQueue = new Queue();
-    new Queue();
-    const errorQueue = new Queue();
+    // const responseQueue = new Queue();
+    // const errorQueue = new Queue();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const onRequestReceived = new CustomEvent('onRequestReceived');
-    window.addEventListener('onRequestReceived', () => {
-        const firstQueuedItem = requestQueue.dequeue();
-        console.log('firstQueuedItem', firstQueuedItem);
-        return firstQueuedItem;
-    });
+    const onAvionRequestReceived = new CustomEvent('onAvionRequestReceived');
+    // window.addEventListener('onRequestReceived', () => {
+    //   const firstQueuedItem = requestQueue.dequeue();
+    //   console.log('firstQueuedItem', firstQueuedItem);
+    //   return firstQueuedItem;
+    // });
     function parseXHRResult(xhr) {
         try {
             const result = {
@@ -144,7 +145,7 @@
                 json: () => getJson(xhr),
                 responseUrl: xhr.responseURL,
             };
-            errorQueue.enqueue(result);
+            // errorQueue.enqueue(result);
             return result;
         }
     }
@@ -171,7 +172,7 @@
             json: () => JSON.parse(message || xhr.statusText),
             responseUrl: xhr.responseURL,
         };
-        errorQueue.enqueue(result);
+        // errorQueue.enqueue(result);
         return result;
     }
     const avion = (options) => {
@@ -203,8 +204,6 @@
             if (ignoreCache) {
                 xhr.setRequestHeader('Cache-Control', 'no-cache');
             }
-            requestQueue.enqueue(options);
-            window.dispatchEvent(onRequestReceived);
             xhr.timeout = timeout;
             xhr.onload = () => {
                 resolve(parseXHRResult(xhr));
@@ -227,11 +226,12 @@
     avion.post = post;
     avion.put = put;
     avion.del = del;
+    avion.enableRequestQueue = enableRequestQueue;
     // this is going to hold all the requests that have come in
-    // avion.requestQueue = requestQueue;
+    avion.requestQueue = requestQueue;
     // avion.responseQueue = responseQueue;
     // avion.errorQueue = errorQueue;
-    avion.onRequestReceived = onRequestReceived;
+    avion.onRequestReceived = onAvionRequestReceived;
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.

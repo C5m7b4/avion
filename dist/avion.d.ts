@@ -1,4 +1,5 @@
 import { XhrOptions, AvionResult } from './interfaces';
+import { Queue } from './Queue';
 export declare function parseXHRResult(xhr: XMLHttpRequest): AvionResult;
 export declare function getJson(xhr: XMLHttpRequest): any;
 export declare function errorResponse(xhr: XMLHttpRequest, message?: string | null): AvionResult;
@@ -8,6 +9,8 @@ declare const avion: {
     post: (url: string, data: any) => Promise<AvionResult>;
     put: (url: string, data: any) => Promise<AvionResult>;
     del: (url: string, id: string) => Promise<AvionResult>;
+    enableRequestQueue: boolean;
+    requestQueue: Queue<unknown>;
     onRequestReceived: CustomEvent<unknown>;
 };
 export default avion;

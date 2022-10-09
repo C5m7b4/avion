@@ -5,18 +5,19 @@ import { put } from './Put';
 import { post } from './Post';
 import { Queue } from './Queue';
 
+const enableRequestQueue = false;
 const requestQueue = new Queue();
-const responseQueue = new Queue();
-const errorQueue = new Queue();
+// const responseQueue = new Queue();
+// const errorQueue = new Queue();
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-const onRequestReceived = new CustomEvent('onRequestReceived');
-window.addEventListener('onRequestReceived', () => {
-  const firstQueuedItem = requestQueue.dequeue();
-  console.log('firstQueuedItem', firstQueuedItem);
-  return firstQueuedItem;
-});
+const onAvionRequestReceived = new CustomEvent('onAvionRequestReceived');
+// window.addEventListener('onRequestReceived', () => {
+//   const firstQueuedItem = requestQueue.dequeue();
+//   console.log('firstQueuedItem', firstQueuedItem);
+//   return firstQueuedItem;
+// });
 
 export function parseXHRResult(xhr: XMLHttpRequest): AvionResult {
   try {
@@ -42,7 +43,7 @@ export function parseXHRResult(xhr: XMLHttpRequest): AvionResult {
       json: () => getJson(xhr),
       responseUrl: xhr.responseURL,
     };
-    errorQueue.enqueue(result);
+    // errorQueue.enqueue(result);
     return result;
   }
 }
@@ -72,7 +73,7 @@ export function errorResponse(
     json: <T>() => JSON.parse(message || xhr.statusText) as T,
     responseUrl: xhr.responseURL,
   };
-  errorQueue.enqueue(result);
+  // errorQueue.enqueue(result);
   return result;
 }
 
@@ -108,8 +109,10 @@ const avion = (options: XhrOptions) => {
       xhr.setRequestHeader('Cache-Control', 'no-cache');
     }
 
-    requestQueue.enqueue(options);
-    window.dispatchEvent(onRequestReceived);
+    if (enableRequestQueue) {
+      requestQueue.enqueue(options);
+      window.dispatchEvent(onAvionRequestReceived);
+    }
 
     xhr.timeout = timeout;
 
@@ -137,9 +140,10 @@ avion.get = get;
 avion.post = post;
 avion.put = put;
 avion.del = del;
+avion.enableRequestQueue = enableRequestQueue;
 // this is going to hold all the requests that have come in
-// avion.requestQueue = requestQueue;
+avion.requestQueue = requestQueue;
 // avion.responseQueue = responseQueue;
 // avion.errorQueue = errorQueue;
-avion.onRequestReceived = onRequestReceived;
+avion.onRequestReceived = onAvionRequestReceived;
 export default avion;
