@@ -1,5 +1,7 @@
 import { IQueue } from './interfaces';
 
+// a queue uses FIFO (first in first out)
+
 export class Queue<T> implements IQueue<T> {
   private storage: T[] = [];
 
