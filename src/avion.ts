@@ -29,7 +29,8 @@ export function parseXHRResult(xhr: XMLHttpRequest): AvionResult {
       json: () => getJson(xhr),
       responseUrl: xhr.responseURL,
     };
-    window.dispatchEvent(onRequestReceived);
+    // requestQueue.enqueue(result);
+    // window.dispatchEvent(onRequestReceived);
     return result;
   } catch (error) {
     const result = {
@@ -107,6 +108,9 @@ const avion = (options: XhrOptions) => {
       xhr.setRequestHeader('Cache-Control', 'no-cache');
     }
 
+    requestQueue.enqueue(options);
+    window.dispatchEvent(onRequestReceived);
+
     xhr.timeout = timeout;
 
     xhr.onload = () => {
@@ -120,9 +124,6 @@ const avion = (options: XhrOptions) => {
     xhr.ontimeout = () => {
       resolve(errorResponse(xhr, 'Request timed out'));
     };
-
-    requestQueue.enqueue(xhr);
-    window.dispatchEvent(onRequestReceived);
 
     if (typeof options.data == 'string') {
       xhr.send(options.data);
