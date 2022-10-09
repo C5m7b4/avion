@@ -3,6 +3,7 @@ import { get } from './Get';
 import { del } from './Delete';
 import { put } from './Put';
 import { post } from './Post';
+import { Queue } from './Queue';
 export function parseXHRResult(xhr) {
     try {
         const result = {
@@ -100,8 +101,10 @@ const avion = (options) => {
         }
     });
 };
+const avionQueue = new Queue();
 avion.get = get;
 avion.post = post;
 avion.put = put;
 avion.del = del;
+avion.queue = avionQueue;
 export default avion;
