@@ -454,4 +454,30 @@ This is what it would look like in the console. Of course you could shoot this u
 const excludeUrls = ['https://someServer/api/logs/logRequestOptions']
 ```
 
-and then in your function, just grab the url out after you dequeue it and then do nothing with that. 
+and then in your function, just grab the url out after you dequeue it and then do nothing with that.
+
+Also we have added two other queues that can be used in the same manner.
+
+```js
+avion.enableRequestQueue(true);
+avion.enableResponseQueue(true);
+avion.enableErrorQueue(true); // these all default to false
+```
+
+Now you can actually use these queues in your app
+
+```js
+window.addEventListener("onAvionRequestReceived", () => {
+  const firstQueuedItem = avion.requestQueue.dequeue();
+  console.log("avion request", firstQueuedItem);
+});
+
+window.addEventListener("onAvionResponseReceived", () => {
+  const firstItemDequeued = avion.responseQueue.dequeue();
+  console.log("avion response", firstItemDequeued);
+
+  window.addEventListener("onAvionErrorReceived", () => {
+  const firstItemDequeued = avion.errorQueue.dequeue();
+  console.log("avion error", firstItemDequeued);
+});
+```
