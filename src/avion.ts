@@ -6,18 +6,16 @@ import { post } from './Post';
 import { Queue } from './Queue';
 
 let enableRequestQueue = false;
-const requestQueue = new Queue();
-// const responseQueue = new Queue();
-// const errorQueue = new Queue();
+let enableErrorQueue = false;
+let enableResponseQueue = false;
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+const requestQueue = new Queue();
+const errorQueue = new Queue();
+const responseQueue = new Queue();
+
 const onAvionRequestReceived = new CustomEvent('onAvionRequestReceived');
-// window.addEventListener('onRequestReceived', () => {
-//   const firstQueuedItem = requestQueue.dequeue();
-//   console.log('firstQueuedItem', firstQueuedItem);
-//   return firstQueuedItem;
-// });
+const onAvionErrorReceived = new CustomEvent('onAvionErrorReceived');
+const onAvionResponseReceived = new CustomEvent('onAvionResponseReceived');
 
 export function parseXHRResult(xhr: XMLHttpRequest): AvionResult {
   try {
@@ -30,8 +28,11 @@ export function parseXHRResult(xhr: XMLHttpRequest): AvionResult {
       json: () => getJson(xhr),
       responseUrl: xhr.responseURL,
     };
-    // requestQueue.enqueue(result);
-    // window.dispatchEvent(onRequestReceived);
+    if (enableResponseQueue) {
+      responseQueue.enqueue(result);
+      window.dispatchEvent(onAvionResponseReceived);
+    }
+
     return result;
   } catch (error) {
     const result = {
@@ -43,7 +44,11 @@ export function parseXHRResult(xhr: XMLHttpRequest): AvionResult {
       json: () => getJson(xhr),
       responseUrl: xhr.responseURL,
     };
-    // errorQueue.enqueue(result);
+    if (enableErrorQueue) {
+      errorQueue.enqueue(result);
+      window.dispatchEvent(onAvionErrorReceived);
+    }
+
     return result;
   }
 }
@@ -73,7 +78,10 @@ export function errorResponse(
     json: <T>() => JSON.parse(message || xhr.statusText) as T,
     responseUrl: xhr.responseURL,
   };
-  // errorQueue.enqueue(result);
+  if (enableErrorQueue) {
+    errorQueue.enqueue(result);
+    window.dispatchEvent(onAvionErrorReceived);
+  }
   return result;
 }
 
@@ -143,9 +151,19 @@ avion.del = del;
 avion.enableRequestQueue = (v: boolean) => {
   enableRequestQueue = v;
 };
+avion.enableErrorQueue = (v: boolean) => {
+  enableErrorQueue = v;
+};
+avion.enableResponseQueue = (v: boolean) => {
+  enableResponseQueue = v;
+};
 // this is going to hold all the requests that have come in
 avion.requestQueue = requestQueue;
-// avion.responseQueue = responseQueue;
-// avion.errorQueue = errorQueue;
+avion.errorQueue = errorQueue;
+avion.responseQueue = responseQueue;
+
 avion.onRequestReceived = onAvionRequestReceived;
+avion.onErrorReceived = onAvionErrorReceived;
+avion.onResponseReceived = onAvionResponseReceived;
+
 export default avion;
