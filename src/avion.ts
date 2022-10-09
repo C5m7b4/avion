@@ -122,6 +122,7 @@ const avion = (options: XhrOptions) => {
     };
 
     requestQueue.enqueue(xhr);
+    window.dispatchEvent(onRequestReceived);
 
     if (typeof options.data == 'string') {
       xhr.send(options.data);
